@@ -1,102 +1,2049 @@
-<?php
-session_start();
-if($_SESSION['type']=='USER')
-{
+<!DOCTYPE html>
+<html lang="en-US">
 
-	$name =$_SESSION["name"];
-	$phone =$_SESSION["phone"];
-	$national_id= $_SESSION["national_id"];	
-	$type =$_SESSION["type"];
-	
-}
-else
-{
-	header("location:login.php");
-}
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>CASE</title> 
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Home</title>
+    
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+
+    <link href="https://assets.softr-files.com/libs/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://assets.softr-files.com/libs/choices.js/10.2.0/choices.min.css" rel="stylesheet" crossorigin="anonymous">
+    <script src="https://assets.softr-files.com/libs/choices.js/10.2.0/choices.min.js" crossorigin="anonymous"></script>
+
+    <style>
+        @font-face {
+            font-family: "Inter";
+            src: url("https://assets.softr-files.com/fonts/inter.woff2") format("woff2");
+            font-weight: 100 900;
+            font-display: swap;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow: hidden;
+            font-family: "Inter", sans-serif;
+            font-feature-settings: 'ss01' on, 'ss03' on, 'cv06' on, 'cv11' on;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html, body {
+            overscroll-behavior: none;
+            height: 100%
+        }
+
+        p, h1, h2, h3, h4, h5, small {
+            white-space: pre-line;
+        }
+
+        .preview-header {
+            background-color: #fff;
+            z-index: 300;
+            position: fixed;
+            padding: 0;
+            box-shadow: 0 3px 4px -2px #25252508;
+            width: 100%;
+        }
+
+        .preview-header .toolbar {
+            font-size: 12px;
+            width: 100%;
+            height: 48px;
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .preview-header__screens {
+            /* Center the screens icons in the toolbar and remove dependency on flex flow.
+               Use absolute positioning so hiding #selectUser (display:none) won't shift these. */
+            margin-right: 0;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: inline-flex;
+            align-items: center;
+            background-color: #f5f6f7;
+            border-radius: 8px;
+            padding: 2px;
+            gap: 2px;
+            box-sizing: border-box;
+        }
+
+        .preview-header .update-banner {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            background-color: #212121;
+            height: 40px;
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 20px;
+            letter-spacing: 0;
+            text-align: left;
+            color: #FFFFFF;
+        }
+
+        .preview-header .update-banner .refresh-button {
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 20px;
+            letter-spacing: 0;
+            text-align: center;
+            color: #5A5D63;
+            border-radius: 4px;
+            border: 0;
+            background-color: #F0F0F4;
+            margin-left: 16px;
+        }
+
+        .preview-header .update-banner .refresh-button:focus {
+            outline: none;
+        }
+
+        .preview-header__view--selection label.dropdown-label {
+            overflow: hidden;
+            color: #555D6F; /* --text-secondary */
+            text-overflow: ellipsis;
+            text-align: left;
+            padding-left: 16px;
+            margin-bottom: 0;
+            padding-right: 8px;
+
+            /* Other/Label */
+            font-size: 12px; /* --Label-fontSize */
+            font-style: normal;
+            font-weight: 500;
+            line-height: 16px; /* --Label-lineHeight */
+        }
+
+        .preview-header__view--selection {
+            display: flex;
+            align-items: center;
+        }
 
 
-</script>
-<link rel="stylesheet" type="text/css" media="screen" href="bin/css/main.css" />
-<link rel="st
-var jname=$("#jname").val();ylesheet" type="text/css" media="screen" href="bin/css/jquery-ui-1.8.14.custom.css" />
-<link rel="stylesheet" href="bin/header/style.css" type="text/css" /><style>._css3m{display:none}</style>
+        .preview-header__view--selection .choices,
+        .preview-header__view--selection .choices__inner {
+            width: 240px;
+            height: 32px;
+            min-height: 32px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 20px;
+            text-align: left;
+            padding: 0 !important;
+            margin-bottom: 0;
+            border: none;
+            background-color: #F5F6F7;
+            display: flex;
+            align-items: center;
+        }
+
+        .preview-header__view--selection .choices:hover .choices__inner {
+            background-color: #E9EAED;
+        }
+
+        .preview-header__view--selection .ph-info {
+            font-size: 14px;
+            color: #8F95A0;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+
+        .preview-header__shareable {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+        }
+
+        .preview_header__shareable--link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 0 12px;
+            height: 2rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            line-height: 1.25rem;
+            text-align: center;
+
+            color: #111822 !important;
+            /* --gray-11 */
+            background-color: #FFF;
+            /* --white */
+            border: 1px solid #DFE2E6;
+            /* --gray-4 */
+            border-radius: 7px;
+            box-shadow: 0 -1px 1px 0 rgba(0, 0, 0, 0.06) inset, 0 1px 2px -1px rgba(0, 0, 0, 0.08);
+            transition: opacity 150ms cubic-bezier(0.16, 1, 0.3, 1),
+            transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
+
+            cursor: pointer;
+        }
+
+        .preview_header__shareable--link:hover {
+            background: linear-gradient(0deg, rgba(24, 32, 45, 0.05) 0%, rgba(24, 32, 45, 0.05) 100%), #FFF;
+            box-shadow: 0 -1px 1px 0 rgba(0, 0, 0, 0.06) inset, 0 1px 2px -1px rgba(0, 0, 0, 0.08);
+        }
+
+        .preview_header__shareable--link:focus {
+            outline: none;
+            box-shadow: 0 -1px 1px 0 rgba(0, 0, 0, .04) inset, 0 1px 2px -1px rgba(0, 0, 0, .08);
+        }
+
+        .preview_header__shareable--link:active {
+            transform: scale(0.97);
+            box-shadow: none;
+            background: linear-gradient(0deg, rgba(24, 32, 45, 0.10) 0%, rgba(24, 32, 45, 0.10) 100%), #FFF;
+        }
+
+        .preview_header__shareable--link:focus-visible {
+            outline: 2px solid #386af5;
+            /* --blue-9 */
+            outline-offset: 2px;
+        }
+
+        .preview_header__shareable--link img {
+            height: 16px;
+            width: 16px;
+        }
+
+        .preview-header__close {
+            border-left: 1px solid #F0F0F4;
+            padding-left: 12px;
+        }
+
+        .preview-header__screens .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            border-radius: 7px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: #717479 !important;
+            cursor: pointer;
+            outline: none;
+            user-select: none;
+            text-decoration: none;
+            position: relative;
+            z-index: 1;
+            transition: color 200ms ease;
+        }
+
+        .preview-header__screens .icon svg {
+            width: 18px;
+            height: 18px;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        .preview-header__screens .icon:hover:not(.active) {
+            color: #555D6F !important;
+        }
+
+        .preview-header__screens .icon.active {
+            color: #111822 !important;
+            background-color: #FFFFFF;
+            border: 1px solid #e9eaed;
+            box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.08);
+        }
+
+        .iframe-container {
+            -webkit-box-flex: 1;
+            -ms-flex: 1 0 auto;
+            flex: 1 0 auto;
+            position: relative;
+            background-color: #343a40 !important;
+            height: 100%;
+        }
+
+        .full-screen-preview__iframe {
+            width: 100%;
+            background-color: white;
+            border: 0;
+            height: calc(100% - 48px);
+            margin-top: 48px;
+            position: absolute;
+            border: none;
+        }
+
+        .iframe-preview--mobile {
+            width: 375px;
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+        }
+
+        .iframe-preview--tablet {
+            width: 768px;
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+        }
+
+        .show {
+            display: inline-block;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .choices__list.choices__list--dropdown .choices__list {
+            overflow-x: hidden;
+            padding: 8px;
+        }
+
+        .choices__list.choices__list--dropdown {
+            border-radius: 10px !important;
+            border: 1px solid rgba(24, 32, 45, 0.08) !important;
+            box-shadow: 0px 14px 28px -6px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+            overflow: hidden;
+            margin-top: 2px !important;
+        }
+
+        .choices .choices__list .user {
+            display: flex;
+            align-items: center;
+            border-radius: 3px;
+            padding-bottom: 2px;
+        }
+
+        .choices .choices__list .empty-user-list {
+            display: flex;
+            align-items: center;
+            background-color: #EDF3FB;
+            border: 1px solid #C9DAF2;
+            padding: 9px 16px 9px 8px;
+            border-radius: 8px;
+            cursor: default;
+            margin: 8px auto;
+            width: 208px;
+        }
+
+        .choices .choices__list .empty-user-list .message {
+            color: #5A5D63;
+            word-break: break-word;
+        }
+
+        .choices .choices__list .empty-user-list::placeholder {
+            color: #AEAEB5;
+        }
+
+        .choices .choices__list .empty-user-list i {
+            margin: 4px 12px 44px 4px;
+            color: #4D85D5;
+            font-size: 16px;
+        }
+
+        .choices .choices__list .empty-user-list a {
+            color: #4D85D5;
+            text-decoration: underline;
+        }
+
+        .choices__item.choices__item--selectable {
+            background: transparent;
+        }
+
+        .choices__item.choices__item--choice.is-selected {
+            font-weight: 600;
+        }
+
+
+        .choices .choices__list .user .avatar {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border-radius: 50%;
+            margin: 8px;
+            color: #212121;
+            overflow: hidden;
+        }
+
+        .choices .choices__list.choices__list--single {
+            padding: 5px 10px 2px 10px;
+            flex: 1;
+        }
+
+        .choices .choices__list.choices__list--single .user .email {
+            max-width: 185px;
+            width: 185px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .choices__item.choices__item--choice.is-selected .email,
+        .choices__item.choices__item--choice.is-selected .userGroups {
+            font-weight: 400;
+        }
+
+        .choices .choices__list.choices__list--dropdown .info.non-logged-in.is-selected .email {
+            color: #212121;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .choices .choices__list.choices__list--single .user .avatar {
+            width: 16px;
+            height: 16px;
+            min-width: 16px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            margin: 0;
+            margin-right: 8px;
+            color: #AEAEB5;
+            border: none;
+        }
+
+        .choices .choices__list.choices__list--single .user .avatar .image {
+            width: 16px;
+            height: 16px;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .choices__heading {
+            font-weight: 600;
+            font-size: 11px;
+            padding: 0px;
+            border-bottom: none;
+            color: #AEAEB5;
+        }
+
+        /* Hide the default Choices.js dropdown icon */
+        .choices[data-type*=select-one]::after {
+            display: none;
+        }
+
+        .choices__chevron {
+            font-family: "Phosphor";
+            font-size: 16px;
+            margin-right: 8px;
+            color: #555D6F;
+            transition: transform 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .choices.is-open .choices__chevron {
+            transform: rotate(180deg);
+        }
+
+        .choices .choices__list .user .info {
+            max-width: 130px;
+            width: 130px;
+        }
+
+        .choices .choices__list .user .info.non-logged-in {
+            max-width: 190px;
+            width: 190px;
+            margin-left: 15px;
+            padding: 10px 0 10px 0;
+            color: #5A5D63;
+            font-weight: 400;
+        }
+
+        .choices .choices__list .user .avatar .image {
+            width: 32px;
+            height: 32px;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .choices .choices__list .user .avatar .user-initials {
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .choices .choices__list .user .name {
+            color: #212121;
+        }
+
+        .choices .choices__list .is-selected .user .name {
+            max-width: 145px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .choices .choices__list .user .email {
+            color: #5A5D63;
+            font-size: 12px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .choices .choices__list .user .userGroups {
+            color: #383B3D;
+            font-size: 12px;
+            background-color: #F0F0F4;
+            display: inline-block;
+            padding: 1px 3px;
+            border-radius: 2px;
+            margin-right: 3px;
+            width: auto;
+        }
+
+        .choices .choices__list .user:hover .userGroups {
+            background-color: #d5d5d5;
+        }
+
+        .choices .choices__list .user:hover {
+            background-color: #F5F6F7;
+        }
+
+        .choices .choices__list > :first-child {
+            background-color: transparent !important;
+        }
+
+        .choices .choices__list .user .check {
+            font-size: 16px;
+            height: 16px;
+            width: 16px;
+        }
+
+        .choices[data-type*=select-one] .choices__input {
+            width: calc(100% - 16px);
+            padding: 8px 10px 8px 34px;
+            border: none !important;
+            background-color: #F5F6F7 !important;
+            background-image: url("https://assets.softr-files.com/assets/images/magnifying-glass.svg");
+            background-size: 16px 16px;
+            background-repeat: no-repeat;
+            background-position: 10px center;
+            border-radius: 7px;
+            margin: 8px 8px 2px 8px;
+            font-size: 13px;
+            font-weight: 450;
+            line-height: 20px;
+        }
+
+        .choices[data-type*=select-one] .choices__input:focus {
+            border: none !important;
+            background-color: #F5F6F7 !important;
+            box-shadow: none !important;
+            outline: none;
+        }
+
+        .preview-header__view--selection .choices.is-open .choices__inner {
+            border: 1.5px solid #386AF5 !important; /* --focus-border-width, --blue-9 */
+            box-shadow: 0 0 1px 1px #DDEAFF !important; /* Inputs/focus-glow, --blue-4 */
+            border-radius: 8px;
+        }
+
+        .choices[data-type*=select-one] .choices__input::placeholder {
+            color: #8F95A0 !important;
+            font-size: 13px !important;
+            font-weight: 450 !important;
+        }
+
+        .choices__item {
+            background-color: #fff;
+            transition: .25s;
+            cursor: pointer;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .choices__group {
+            margin: 0;
+        }
+
+        .choices__list[aria-expanded] {
+            margin-top: 0;
+        }
+
+        .choices__list--dropdown .choices__item,
+        .choices__list[aria-expanded] .choices__item {
+            font-size: 13px;
+            font-weight: 450;
+            color: #111822;
+            padding: 6px 8px;
+            border-radius: 6px;
+            margin: 0;
+            line-height: 20px;
+        }
+
+        .choices__item.choices__item--choice.has-no-choices {
+            padding: 0 !important;
+        }
+
+        .choices__item.choices__item--choice.has-no-results {
+            color: #8F95A0 !important;
+        }
+
+        [data-value="Non-logged-in user"] {
+            margin-top: 8px !important;
+            margin-bottom: 8px !important;
+        }
+
+        .non-logged-in-separator {
+            width: calc(100% - 12px);
+            height: 1px;
+            background: #E9EAED;
+            margin: 4px 6px;
+        }
+
+        .close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            font-size: 28px;
+        }
+
+        .close:focus {
+            outline: none;
+        }
+
+        .qr-container {
+            flex-direction: column;
+            align-items: center;
+            padding: 12px;
+            background: #FFFFFF;
+            box-shadow: 0px 2px 4px rgba(33, 33, 33, 0.04), 0px 8px 32px rgba(33, 33, 33, 0.08);
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 12px;
+            line-height: 16px;
+            text-align: center;
+            color: #111822;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 176px;
+            /* initially we do not show QR block */
+        }
+
+        .link-button {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            column-gap: 4px;
+            color: #2F5BD7;
+            text-decoration: none;
+            outline: none;
+            box-shadow: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .link-button:focus,
+        .link-button:focus-visible {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .urlQRCodeImage {
+            width: 152px;
+            height: 152px;
+            margin-bottom: 12px;
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .hidden {
+            animation: fadeOut 0.2s forwards;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .hiddenWithNoAnimation {
+            pointer-events: none;
+            /* Disable interactions */
+            opacity: 0;
+            /* Ensure it's fully invisible */
+            position: absolute;
+        }
+
+        .visible {
+            display: block;
+            animation: fadeIn 0.2s forwards;
+            opacity: 1;
+        }
+
+        .tooltip-inner {
+            max-width: 300px !important;
+            font-size: 12px !important;
+            font-weight: normal !important;
+            background: #18202d;
+            color: #fff;
+            border: 0;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            padding: 8px 10px;
+            border-radius: 7px;
+            box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-sizing: border-box;
+            word-wrap: break-word;
+        }
+
+        .tooltip.show {
+            opacity: 1;
+        }
+
+        .bs-tooltip-auto[x-placement^=bottom] .arrow::before,
+        .bs-tooltip-bottom .arrow::before {
+            display: none;
+        }
+
+        .viewSelect {
+            width: 245px;
+        }
+
+        .loading-skeleton {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skeleton-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 8px;
+        }
+
+        .skeleton-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 99px;
+            background: #F5F6F7;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skeleton-bar {
+            height: 13px;
+            border-radius: 99px;
+            background: #F5F6F7;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skeleton-dot::after,
+        .skeleton-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.6) 50%, transparent 100%);
+            animation: skeleton-shimmer 1.5s ease-in-out infinite;
+        }
+
+        @keyframes skeleton-shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /*Confirmation Modal styles*/
+        #userConfirmationModal .modal-dialog {
+            max-width: 520px;
+        }
+
+        #userConfirmationModal .modal-content {
+            box-shadow: 0 24px 48px 0 #2121210A;
+            border-radius: 16px;
+            border: 0;
+            padding: 32px;
+
+        }
+
+        #userConfirmationModal .modal-header {
+            border: 0;
+            padding: 0;
+            margin-bottom: 16px;
+        }
+
+        #userConfirmationModal .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 32px;
+            letter-spacing: 0;
+            text-align: left;
+            white-space: normal;
+            color: #212121;
+        }
+
+        #userConfirmationModal .modal-body {
+            color: #5A5D63;
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 20px;
+            letter-spacing: 0;
+            text-align: left;
+            padding: 0;
+            padding-right: 4px;
+            white-space: normal;
+        }
+
+        #userConfirmationModal .modal-body p {
+            white-space: normal;
+            padding: 0;
+            margin: 0;
+        }
+
+        #userConfirmationModal .modal-footer {
+            border: 0;
+            padding: 0;
+            margin-top: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        #userConfirmationModal .remember-checkbox label {
+            color: #383B3D;
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 23px;
+            letter-spacing: 0;
+            text-align: left;
+
+        }
+
+        #userConfirmationModal .submit-btn {
+            background-color: #EEA941;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 20px;
+            letter-spacing: 0;
+            text-align: center;
+            border: 0;
+            color: #28192D;
+
+        }
+
+        /*Confirmation Modal styles end */
+
+        /*Toaster Modal styles */
+        #toast-container {
+            bottom: 56px;
+            left: 25px;
+            position: absolute;
+            background: transparent;
+            border: 0;
+            box-shadow: none;
+            max-width: 400px;
+            width: 400px;
+            z-index: 1;
+        }
+
+
+        div#toast-container > div.toast-body {
+            background-repeat: no-repeat;
+            background-position: 12px 12px;
+            color: #383B3D;
+            max-width: 400px;
+            width: 400px;
+            border-radius: 12px;
+            opacity: 1;
+            border: 0;
+            padding-left: 45px;
+        }
+
+        #toast-container .toast-body .title {
+            font-weight: 600;
+            font-size: 13px;
+            color: #212121;
+            margin-bottom: 2px;
+            line-height: 18px;
+        }
+
+        #toast-container .toast-body .message {
+            max-width: 300px !important;
+            width: 300px !important;
+            color: #5A5D63;
+            font-size: 13px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 18px;
+        }
+
+        #toast-container .toast-body .close {
+            top: 5px;
+            right: 10px;
+            font-size: 18px;
+        }
+
+        div#toast-container > div.toast-error {
+            background-color: #FCEFEF;
+            background-image: url('https://softr-assets-eu-shared.s3.eu-central-1.amazonaws.com/studio/blocks/assets/toaster-close-icon.svg') !important;
+        }
+
+        div#toast-container > div.toast-warning {
+            background-color: #fceed9;
+            background-image: url("https://softr-assets-eu-shared.s3.eu-central-1.amazonaws.com/studio/blocks/assets/warning1.svg");
+        }
+
+        div#toast-container > div.toast-info {
+            background-color: #edf3fb;
+            background-image: url("https://softr-assets-eu-shared.s3.eu-central-1.amazonaws.com/studio/blocks/assets/info.svg");
+        }
+
+        div#toast-container > div.toast-success {
+            background-color: #E9F6F2;
+            background-image: url("https://softr-assets-eu-shared.s3.eu-central-1.amazonaws.com/studio/blocks/assets/success.svg");
+        }
+
+        @media (max-width: 910px) {
+            .preview-header .preview-header__screens {
+                margin-right: 0;
+            }
+        }
+
+        @media (max-width: 660px) {
+            .preview-header__view--selection {
+                padding-left: 8px;
+            }
+
+            .preview-header__view--selection label.dropdown-label {
+                display: none;
+            }
+
+            .preview_header__shareable--link {
+                font-size: 0;
+                padding: 0 8px;
+                min-height: 2rem;
+            }
+
+
+            .icon {
+                padding: 3px;
+            }
+
+            .icon svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .preview-header__view--selection .ph-info {
+                display: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            div#toast-container > div.toast-body {
+                max-width: 320px !important;
+                width: 320px !important;
+            }
+
+            #toast-container .toast-body .message {
+                max-width: 250px !important;
+                width: 250px !important;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .preview-header {
+                display: none;
+            }
+
+            .full-screen-preview__iframe {
+                height: 100%;
+                margin-top: 0;
+            }
+        }
+
+        /*Toaster Modal styles end */
+    </style>
+    <script>
+        const APPID = '307b8135-9276-4d91-bebd-660e267d4104';
+        const PAGE_ID = 'e0fcdc49-6e48-42f5-bfae-585d2e643dbe';
+        const IS_FORM_APP = 'false' === 'true';
+        const shouldDisplayIncompatibleBlocksWarning = 'false' === 'true';
+        const isUsersConnectionDatasourceUnified = 'true' === 'true';
+    </script>
+        <script>
+        const USER_ID = "userId";
+        const APP_ID = "appId";
+        const SIGN_IN_REDIRECT_URL = "signInRedirectionUrl";
+        const SIGN_OUT_REDIRECT_URL = "signOutRedirectionUrl";
+
+        function getEnvironmentSpecificUrl() {
+            const hostname = window.location.hostname;
+            const stagingMatch = hostname.match(/staging\d{2}/);
+
+            if (stagingMatch) {
+                return `https://studio-${stagingMatch[0]}.softr.io/applications/${APPID}/users-collection/users`;
+            } else {
+                return `https://studio.softr.io/applications/${APPID}/users-collection/users`;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            window.addEventListener('message', (event) => {
+                const message = event.data;
+                if (message.name === 'user-sign-out-triggered') {
+                    choices.setChoiceByValue(nonLoggedInUser.value);
+                    window.history.pushState(null, '', '/' + window.location.search);
+                }
+            });
+
+            window.addEventListener('message', async (event) => {
+                if (event.data.name === 'previewIframeLoaded') {
+                    getUsers();
+                }
+
+                // This event is triggered from the V5 Account Settings block, in case the user email is updated,
+                // so we update the selected user in the preview to use the new email.
+                if (event.data.name === "updateSelectedUser") {
+                    await getUsers();
+                    onUserSelect(event.data.email);
+                }
+            });
+
+            const iframe = document.querySelector(".full-screen-preview__iframe");
+            const bannerForUpdate = document.querySelector(".update-banner");
+            const links = document.querySelectorAll(".icon");
+            const refreshButton = document.getElementById('refresh-button');
+            const editButton = document.getElementById('edit-button');
+            const selectElement = document.getElementById('viewSelect');
+
+            const url = getEnvironmentSpecificUrl();
+
+            const loadingTemplate = `
+                            <div class="loading-skeleton">
+                                <div class="skeleton-item"><div class="skeleton-dot"></div><div class="skeleton-bar" style="width: 120px;"></div></div>
+                                <div class="skeleton-item"><div class="skeleton-dot"></div><div class="skeleton-bar" style="width: 82px;"></div></div>
+                                <div class="skeleton-item"><div class="skeleton-dot"></div><div class="skeleton-bar" style="width: 153px;"></div></div>
+                                <div class="skeleton-item"><div class="skeleton-dot"></div><div class="skeleton-bar" style="width: 120px;"></div></div>
+                            </div>
+                    `;
+
+            const noChoicesTemplate = `
+                            <div class="empty-user-list">
+                                <i class="ph ph-info"></i>
+                                <div class="message">
+                                    Your application doesn't have registered app users yet.
+                                     <br>
+                                     To preview the logged-in experience,
+                                    <a href=${url}
+                                    target="_blank">set up users in your User Settings.</a>
+                                </div>
+                            </div>
+                    `;
+            let nonLoggedInUser = {
+                value: 'Non-logged-in user',
+                customProperties: {
+                    name: '',
+                    email: 'Non-logged-in user',
+                    userGroups: [],
+                    image: '',
+                    initials: ''
+                }
+            };
+
+            let lastUpdateResponse = {
+                updated: false,
+                givenVersion: 0,
+                newestVersion: 0
+            };
+
+            let selectedUserEmail = '';
+            let applicationUsers = [];
+
+            setSelectedScreenSize();
+            initTooltip();
+            listenToNewUpdates();
+            getUrlQRCode();
+            hideUserSelectionIfNeeded();
+
+            if (shouldDisplayIncompatibleBlocksWarning) {
+                showToast(
+                    "Some legacy blocks are hidden on this page because they're incompatible with the new version of Softr app.",
+                    "warning",
+                    10000
+                );
+            }
+
+            iframe.addEventListener('load', function () {
+                const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+
+                const intervalId = setInterval(() => {
+                    updateLinksInIframe(iframeDocument);
+                }, 1000);
+
+                // Cleanup function to clear the interval when the iframe is unloaded
+                iframe.addEventListener('unload', function () {
+                    clearInterval(intervalId);
+                });
+            });
+
+            const choices = new Choices(selectElement, {
+                searchEnabled: true,
+                shouldSort: false,
+                allowHTML: true,
+                itemSelectText: '',
+                renderChoiceLimit: -1,
+                searchResultLimit: 100,
+                choices: applicationUsers,
+                renderSelectedChoices: 'always',
+                searchPlaceholderValue: 'Search users',
+                noChoicesText: loadingTemplate,
+                fuseOptions: {
+                    threshold: 0.1,
+                    distance: 1000
+                },
+                classNames: {
+                    containerOuter: 'choices',
+                    containerInner: 'choices__inner',
+                    input: 'choices__input',
+                    list: 'choices__list',
+                    listItem: 'choices__list--single',
+                },
+                callbackOnCreateTemplates: function (template) {
+                    return {
+                        ...template,
+                        choice: (event, data) => {
+                            const {classNames} = event;
+                            if (!data.selected && choices?.getValue()?.value === data.label) {
+                                data.selected = true;
+                            }
+
+                            const {imageUrl, initials, name, email, userGroups} = data.customProperties;
+                            return template(
+                                email === 'No-users' ?
+                                    noChoicesTemplate :
+                                    (email === 'separator' ? `<div class="non-logged-in-separator choices__group" data-group data-id="${data.id}" data-value="${data.value}" role="group"><div class="choices__heading"></div></div>` :
+
+                                        `
+                                             <div class="${classNames.item} ${classNames.itemChoice} ${data.selected ? classNames.selectedState : ''}" data-select-text="${this.config.itemSelectText}" data-choice ${data.disabled ? 'data-choice-disabled aria-disabled="true"' : 'data-choice-selectable'} data-id="${data.id}" data-value="${data.value}" ${data.groupId > 0 ? 'role="treeitem"' : 'role="option"'}>
+                                                <div class="user">
+                                                ${initials ?
+                                            `<div class="avatar">
+                                                       ${imageUrl ? `<div class="image" style="background-image: url('${imageUrl}')"></div>` : ''}
+                                                       ${!imageUrl ? `<div class="user-initials" style="background: ${randomBackground()}">${initials}</div>` : ''}
+                                                    </div>
+                                                    <div class="info">
+                                                        ${name ? `<div class="name" title="${name}">${name}</div>` : ''}
+                                                        ${email ? `<div class="email" title="${email}">${email}</div>` : ''}
+                                                        ${userGroups && Array.isArray(userGroups) ? userGroups.map(group => `<div class="userGroups">${group}</div>`).join('') : ''}</div>`
+                                            :
+                                            `<div class="info non-logged-in ${data.selected ? classNames.selectedState : ''}"> ${email ? `<div class="email">${email}</div>` : ''}</div>`
+                                        }
+                                                    ${data.selected
+                                            ? (initials ? '<i class="ph ph-check check"></i>' : '<i class="ph ph-check check non-logged-in"></i>')
+                                            : ''
+                                        }
+                                                </div>
+                                              </div>
+                                    `), classNames, data);
+                        },
+                        item: (event, data) => {
+                            const {classNames} = event;
+                            const {imageUrl, initials, name, email, userGroups} = data.customProperties;
+                            return template(
+                                `
+                                                <div class="user">
+                                                    <div class="avatar">
+                                                       ${email === 'Non-logged-in user'
+                                    ? `<i class="ph ph-globe"></i>`
+                                    : (imageUrl
+                                        ? `<div class="image" style="background-image: url('${imageUrl}')"></div>`
+                                        : (initials
+                                            ? `<div class="user-initials" style="background: ${randomBackground()}">${initials}</div>`
+                                            : `<i class="ph ph-user"></i>`))
+                                }
+                                                    </div>
+                                                    <div class="info">
+                                                        ${name ? `<div class="email">${name}</div>` : (email ? `<div class="email">${email}</div>` : '')}
+                                                    </div>
+                                                </div>
+
+                                    `, classNames, data);
+                        }
+                    };
+                },
+            });
+
+            // Add chevron icon to the trigger
+            const chevron = document.createElement('span');
+            chevron.className = 'choices__chevron';
+            chevron.textContent = '\ue9fe';
+            document.querySelector('.choices__inner').appendChild(chevron);
+
+            refreshButton.addEventListener('click', () => {
+                reloadPreview();
+            });
+
+            editButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                openStudioEditor();
+            });
+
+            let studioWindowReference = null;
+
+            function getStudioUrl() {
+                const hostname = window.location.hostname;
+                const path = `applications/${APPID}/pages/${PAGE_ID}`;
+
+                if (hostname === 'localhost') {
+                    return `http://localhost:4200/${path}`;
+                }
+
+                const stagingMatch = hostname.match(/staging\d{2}/);
+                if (stagingMatch) {
+                    return `https://studio-${stagingMatch[0]}.softr.io/${path}`;
+                }
+
+                return `https://studio.softr.io/${path}`;
+            }
+
+            function openStudioEditor() {
+                const studioUrl = getStudioUrl();
+                const studioWindowName = `studio_${APPID}`;
+
+                let existingWin = window.open('', studioWindowName);
+                let needsLoading = false;
+
+                try {
+                    if (!existingWin || existingWin.location.href === 'about:blank') {
+                        needsLoading = true;
+                    }
+                } catch (e) {
+                    needsLoading = false;
+                }
+
+                if (needsLoading) {
+                    studioWindowReference = window.open(studioUrl, studioWindowName);
+                } else {
+                    studioWindowReference = existingWin;
+                    studioWindowReference.postMessage('RE-FOCUS_REQUEST', '*');
+                    studioWindowReference.focus();
+                }
+            }
+
+            function reloadPreview() {
+                //setting device type to URL, that BE can get it and handle visibility checks
+                const urlParams = new URLSearchParams(window.location.search);
+                urlParams.set('device', localStorage.getItem('preview-screen-size'));
+
+                fetch('/studio/refresh' + window.location.search, {method: 'POST'})
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("HTTP error " + response.status);
+                        }
+
+                        // will reload window
+                        window.location.search = urlParams;
+                    })
+                    .catch(error => {
+                        console.error('API request error:', error);
+                    });
+            }
+
+            function listenToNewUpdates() {
+                let previewVersion = getCookieValue('previewVersion');
+                let url = `/studio/updated`;
+
+                if (previewVersion?.length) {
+                    url += `?version=${previewVersion}`;
+                }
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.updated) {
+                            console.log('Data is updated:', data);
+                            lastUpdateResponse = data;
+                            bannerForUpdate.style.display = 'flex';
+                            iframe.style.marginTop = '88px'
+                            return;
+                        }
+
+                        setTimeout(listenToNewUpdates, 5000);
+                    })
+                    .catch(error => {
+                        console.error('API request error:', error);
+                        setTimeout(listenToNewUpdates, 10000);
+                    });
+            }
+
+            function setScreenActiveState(target) {
+
+
+                iframe.classList.remove("iframe-preview--mobile");
+                iframe.classList.remove("iframe-preview--tablet");
+
+                links.forEach(function (link) {
+                    link.classList.remove("active");
+                });
+                target.classList.add("active");
+
+                if (target.classList.contains("desktop")) {
+                    localStorage.setItem('preview-screen-size', 'desktop')
+                } else if (target.classList.contains("tablet")) {
+                    iframe.classList.add("iframe-preview--tablet");
+                    localStorage.setItem('preview-screen-size', 'tablet')
+                } else if (target.classList.contains("mobile")) {
+                    iframe.classList.add("iframe-preview--mobile");
+                    localStorage.setItem('preview-screen-size', 'mobile')
+                }
+            }
+
+            function setSelectedScreenSize() {
+                const screenSizes = ['mobile', 'tablet', 'desktop'];
+                const screenSizeClassPrefix = 'iframe-preview--';
+
+                iframe.classList.remove(...screenSizes.map(size => screenSizeClassPrefix + size));
+                links.forEach(link => link.classList.remove('active'));
+                let screenSize = localStorage.getItem('preview-screen-size');
+                if (!screenSize) {
+                    screenSize = 'desktop';
+                    localStorage.setItem('preview-screen-size', screenSize);
+                }
+                if (screenSizes.includes(screenSize)) {
+                    iframe.classList.add(screenSizeClassPrefix + screenSize);
+                    document.querySelector('.' + screenSize).classList.add('active');
+                }
+            }
+
+            document.addEventListener("click", function (event) {
+                const target = event.target;
+                if (target.closest(".icon")) {
+                    event.preventDefault();
+                    setScreenActiveState(target.closest(".icon"));
+                    getUrlQRCode();
+                }
+            });
+
+            selectElement.addEventListener('change', function (e) {
+                selectedUserEmail = this.value;
+                handleSelectChange();
+            });
+
+            function handleSubmit() {
+                const checkboxValue = document.querySelector('.custom-checkbox input')?.checked;
+                if (checkboxValue) {
+                    localStorage.setItem('isConfirmationModalDisabled', 'true');
+                }
+
+                onUserSelect();
+
+                $('#userConfirmationModal').modal('hide');
+            }
+
+            function handleSelectChange() {
+                const isConfirmationModalDisabled = localStorage.getItem('isConfirmationModalDisabled');
+                if (isConfirmationModalDisabled !== 'true') {
+                    $('#userConfirmationModal').modal('show');
+                } else {
+                    onUserSelect();
+                }
+            }
+
+            $('#userConfirmationModal').on('show.bs.modal', function (e) {
+                const btn = document.querySelector('.submit-btn');
+                selectElement.removeEventListener('change', handleSelectChange);
+                btn.removeEventListener('click', handleSubmit);
+                btn.addEventListener('click', handleSubmit);
+
+
+                $('.modal-body').html(`
+                            <p>You are about to preview the latest version of your app, including unpublished changes, as
+                            <strong>${selectedUserEmail}</strong>.</p>
+                        <br>
+                        <p>Please note that any actions you perform while previewing, such as adding, editing, or deleting data,
+                            will modify the data in your data source.</p>
+                        `)
+            })
+
+            const userSearchInputHandler = function (event) {
+                if (!event.target.value) {
+                    choices.setChoices(applicationUsers, 'value', 'label', true);
+                }
+            }
+
+            async function loadApplicationUsers() {
+                try {
+                    let url = "/studio/users";
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error("HTTP error " + response.status);
+                    }
+                    return await response.json();
+                } catch (err) {
+                    console.log("An error occurred while fetching the API data.", err);
+                    showToast();
+                }
+            }
+
+            async function fetchQRCodeForURL(screenSize) {
+                try {
+                    let url = "/studio/url-qr-code";
+                    let href = window.location.href;
+                    if (!href.includes('device=' + screenSize)) {
+                        href += '&device=' + screenSize;
+                    }
+
+                    let bodyData = JSON.stringify({url: href});
+
+                    const response = await fetch(url, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: bodyData,
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("HTTP error " + response.status);
+                    }
+                    return response.arrayBuffer();
+                } catch (err) {
+                    console.log("An error occurred while fetching QR code for URL.", err);
+                }
+            }
+
+            async function loadCachedPreviewUsers() {
+                try {
+                    let url = "/studio/users/load-cached-users";
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error("HTTP error " + response.status);
+                    }
+                    return await response.json();
+                } catch (err) {
+                    console.log("An error occurred while fetching the API data.", err);
+                    showToast();
+                }
+            }
+
+            async function getUsers() {
+                // Fetch and apply application users immediately
+                let appUsers = await loadApplicationUsers();
+                applyUserData(appUsers);
+                const loadDsUsers = mustLoadDsUsers(appUsers);
+                if (loadDsUsers) {
+                    loadCachedPreviewUsers()
+                        .then(cachedUsers => {
+                            const mergedUsers = mergeUsers(appUsers, cachedUsers || []);
+                            applyUserData(mergedUsers);
+                        }).catch(error => {
+                        console.error("Error loading cached users:", error);
+                    });
+                }
+            }
+
+            function mustLoadDsUsers(appUsers) {
+                const userCount = appUsers.length;
+                const threshold = isUsersConnectionDatasourceUnified ? 1000 : 200;
+                return userCount <= threshold;
+            }
+
+            async function getUrlQRCode() {
+                const screenSize = localStorage.getItem('preview-screen-size');
+                // Do not request QR image if desktop is selected.
+                if (screenSize === 'desktop') {
+                    return;
+                }
+
+                const image = await fetchQRCodeForURL(screenSize);
+                const imgElement = document.getElementById('urlQRCodeImage');
+                const divElement = document.getElementById('urlQRDiv');
+
+                const base64String = btoa(
+                    new Uint8Array(image)
+                        .reduce((data, byte) => data + String.fromCharCode(byte), '')
+                );
+
+                imgElement.src = `data:image/jpeg;base64,${base64String}`;
+                divElement.style.display = 'flex'; // make QR code div visible
+            }
+
+            function hideUserSelectionIfNeeded() {
+                const userSelectionElement = document.getElementById('selectUser');
+                userSelectionElement.style.display = IS_FORM_APP ? 'none' : 'flex';
+            }
+
+            function mergeUsers(appUsers, cachedUsers) {
+                const mergedUsers = [...appUsers];
+                const emails = new Set(appUsers.map(user => user.email));
+                for (const cachedUser of cachedUsers) {
+                    if (emails.has(cachedUser.email)) {
+                        const index = mergedUsers.findIndex(user => user.email === cachedUser.email);
+                        mergedUsers[index] = cachedUser;
+                    }
+                }
+                return mergedUsers;
+            }
+
+            function getUserInitials(fullName, email) {
+                const words = fullName ? fullName.split(' ') : [];
+
+                // If the user has more than two words in their name, take the first two
+                const initials = words.length > 2 ? words.slice(0, 2) : words;
+
+                const result = initials.reduce((acc, word) => {
+                    if (word.trim() !== '') {
+                        return acc + word[0];
+                    }
+                    return acc;
+                }, '');
+
+                // If the result is empty, fallback to the first two letters of the email
+                const initialsUpperCase = result || (email ? email.slice(0, 2) : '');
+
+                return initialsUpperCase.toUpperCase();
+            }
+
+            function randomBackground() {
+                const colors = ['#44B0FF', '#FFB544', '#044878', '#1B998B', '#E84855', '#C67AED', '#5D759D', '#F48498', '#725752', '#6564DB'];
+                const randomIndex = Math.floor(Math.random() * colors.length);
+                return colors[randomIndex];
+            }
+
+            function applyUserData(jsonData) {
+                const result = jsonData.map(({
+                                                 email,
+                                                 name = '',
+                                                 id,
+                                                 userGroups = [],
+                                                 imageUrl = '',
+                                                 isLoggedInUser = false
+                                             }) => ({
+                    value: email,
+                    id,
+                    isLoggedInUser,
+                    customProperties: {
+                        name,
+                        email,
+                        userGroups,
+                        imageUrl,
+                        initials: getUserInitials(name, email),
+                        id
+                    }
+                }));
+
+                applicationUsers = [
+                    {
+                        label: '',
+                        id: '',
+                        choices: [nonLoggedInUser]
+                    },
+                    {
+                        label: '',
+                        id: '',
+                        choices: [
+                            {
+                                value: 'separator',
+                                id: 'anonymous',
+                                customProperties: {
+                                    name: '',
+                                    email: 'separator',
+                                    userGroups: [],
+                                    image: '',
+                                    initials: ''
+                                }
+                            }
+                        ]
+                    },
+                    jsonData.length ?
+                        {
+                            label: 'USERS',
+                            id: 'users',
+                            choices: result
+
+                        } :
+                        {
+                            label: 'USERS',
+                            id: 'users',
+                            selectable: false,
+                            choices: [
+                                {
+                                    value: 'No-users',
+                                    id: 'anonymous',
+                                    customProperties: {
+                                        name: '',
+                                        email: 'No-users',
+                                        userGroups: [],
+                                        image: '',
+                                        initials: ''
+                                    }
+                                }
+                            ]
+                        }
+                ];
+
+                choices.clearChoices();
+                choices.setChoices(applicationUsers);
+
+                selectElement.addEventListener(
+                    'showDropdown', () => {
+                        // this event listener is needed for cases when user remove search text with cmd/ctrl+A
+                        // in that case search event is not triggered
+                        document.querySelector('.choices__list .choices__input').addEventListener('input', userSearchInputHandler);
+                    });
+
+                selectElement.addEventListener(
+                    'hideDropdown', (event) => {
+                        document.querySelector('.choices__list .choices__input').removeEventListener('input', userSearchInputHandler);
+                        if (choices.input.value) {
+                            choices.clearInput();
+                        }
+                        choices.clearChoices();
+                        choices.setChoices(applicationUsers, 'value', 'label', true);
+                    });
+
+                selectElement.addEventListener(
+                    'search',
+                    function (event) {
+                        if (event.detail.value) {
+                            const filteredUsers = [applicationUsers[0],
+                                {
+                                    label: 'USERS',
+                                    choices: applicationUsers[2].choices.filter((choice) =>
+                                        choice.value.toLowerCase().includes(event.detail.value.toLowerCase()) ||
+                                        choice.customProperties?.name?.toLowerCase().includes(event.detail.value.toLowerCase())
+                                    )
+                                }];
+                            choices.setChoices(filteredUsers, 'value', 'label', true);
+                        } else {
+                            choices.setChoices(applicationUsers, 'value', 'label', true);
+                        }
+                    },
+                    false,
+                );
+
+                function setSelectedUser() {
+                    const [nonLoggedInUser, separator, otherUsers] = applicationUsers;
+                    const selectedUserId = choices.getValue()?.customProperties?.id;
+
+                    // if autoUser is true, then after page preview the default user is selected automatically,
+                    // and we need that user in the local storage for further manipulations with users from the preview toolbar
+                    setUserRelatedPropertiesIntoLocalStorage(selectedUserId);
+
+                    if (selectedUserId) {
+                        const [_, otherUsers = {choices: []}] = applicationUsers;
+                        const selectedUser = otherUsers.choices.find(user => user.customProperties?.id === selectedUserId);
+                        choices.setChoiceByValue(selectedUser?.value);
+                    } else {
+                        const loggedInUser = otherUsers.choices.find((user) => user.isLoggedInUser);
+                        if (loggedInUser) {
+                            choices.setChoiceByValue(loggedInUser.value);
+                        } else {
+                            choices.setChoiceByValue(nonLoggedInUser.choices[0].value);
+                        }
+                    }
+                }
+
+                setSelectedUser();
+
+            }
+
+            /*
+             * @param email - optional; used in case the user email is updated in the Account Settings. (the block triggers an event with the new email)
+             */
+            function onUserSelect(email) {
+                const [nonLoggedInUser, separator, otherUsers = {choices: []}] = applicationUsers;
+                const selectedUser = otherUsers.choices.find(user => user.value === email || user.value === selectedUserEmail);
+                let userId = selectedUser?.id || 'anonymous';
+
+                let url = "/studio/impersonate/" + userId;
+
+                let previousUserId = window.localStorage.getItem(USER_ID);
+                const previousAppId = window.localStorage.getItem(APP_ID);
+
+                // if the other app is previewed, then the previous user and application Id should be removed from the local storage
+                if (previousAppId !== APPID) {
+                    previousUserId = 'anonymous';
+                    clearUserLocalStorageProperties()
+                    window.localStorage.removeItem(APP_ID);
+                }
+
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("HTTP error " + response.status);
+                        }
+
+                        const currentUrl = new URL(window.location.href);
+                        const queryParams = new URLSearchParams(currentUrl.search);
+                        queryParams.delete('autoUser');
+                        let path = currentUrl.pathname;
+
+                        if (userId === 'anonymous') {
+                            const previousUserSignOutRedirectionUrl = window.localStorage.getItem(SIGN_OUT_REDIRECT_URL);
+                            // If previously there was a logged-in user, and there is a signOutRedirectionUrl in the local storage, then simulate signout
+                            if (previousUserSignOutRedirectionUrl && previousUserId !== 'undefined' && previousUserId !== 'anonymous') {
+                                path = previousUserSignOutRedirectionUrl;
+                                clearUserLocalStorageProperties();
+                            }
+                            queryParams.delete('recordId');
+                            location.href = `${window.location.origin}${path}?${queryParams.toString()}`;
+                        }
+
+                        const currentUserSignInRedirectionUrl = getCookieValue('signInRedirectionUrl');
+
+                        // If previously there is no logged-in user,
+                        // it means this is the sign-in operation from the non-logged-in user state,
+                        // and the user should be redirected to the after signIn page based on TokenResource Value
+                        if (currentUserSignInRedirectionUrl && (previousUserId === 'undefined' || previousUserId === 'anonymous')) {
+                            path = currentUserSignInRedirectionUrl;
+                        }
+
+                        //check next-page param in iframe
+                        const iframeParams = new URLSearchParams(iframe.contentDocument ? iframe.contentDocument.location.search : "");
+                        const nextPageParam = iframeParams.get('next-page');
+
+                        // If there is a nextPage param in the iframe, then should be prioritized that param against previousUserSignInRedirectionUrl
+                        if (nextPageParam && userId !== "anonymous") {
+                            path = nextPageParam.split("?")[0]
+                            queryParams.delete('next-page');
+                        }
+
+                        setUserRelatedPropertiesIntoLocalStorage(userId);
+
+                        location.href = `${window.location.origin}${path}?${queryParams.toString()}`;
+                    })
+                    .catch(error => {
+                        console.log("An error occurred: ", error);
+                        showToast();
+                    });
+
+            }
+
+            // These local storage values are used to determine:
+            // 1. whether is previewing the same app or not.
+            // 2. whether is switching the user in the dropdown, or selecting a new user from the non-logged-in user state
+            function setUserRelatedPropertiesIntoLocalStorage(userId) {
+                setCurrentUserIdIntoLocalStorage(userId);
+                setCurrentAppIdIntoLocalStorage(APPID);
+                setRedirectionUrlsIntoLocalStorage();
+            }
+
+            function setCurrentUserIdIntoLocalStorage(selectedUserId) {
+                window.localStorage.setItem(USER_ID, selectedUserId);
+            }
+
+            function setCurrentAppIdIntoLocalStorage(appId) {
+                window.localStorage.setItem(APP_ID, appId);
+            }
+
+            function setRedirectionUrlsIntoLocalStorage() {
+                const signInRedirectionUrl = getCookieValue(SIGN_IN_REDIRECT_URL);
+                const signOutRedirectionUrl = getCookieValue(SIGN_OUT_REDIRECT_URL);
+                window.localStorage.setItem(SIGN_IN_REDIRECT_URL, signInRedirectionUrl);
+                window.localStorage.setItem(SIGN_OUT_REDIRECT_URL, signOutRedirectionUrl);
+            }
+
+            function clearUserLocalStorageProperties() {
+                window.localStorage.removeItem(USER_ID);
+                window.localStorage.removeItem(SIGN_OUT_REDIRECT_URL);
+                window.localStorage.removeItem(SIGN_IN_REDIRECT_URL);
+            }
+
+            function getCookieValue(name) {
+                const cookies = document.cookie.split(';');
+                for (const cookie of cookies) {
+                    const [key, value] = cookie.trim().split('=');
+                    if (key === name) {
+                        return decodeURIComponent(value);
+                    }
+                }
+                return undefined;
+            }
+
+            function initTooltip() {
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip();
+                })
+            }
+
+            // showToast is defined globally below, accessible from all script blocks
+
+            function updateLinksInIframe(iframeDocument) {
+                const elements = iframeDocument.querySelectorAll('a');
+                elements.forEach(tag => {
+                    let href = tag.getAttribute('href');
+                    const target = tag.getAttribute('target');
+                    // Exclude anchors that have blob URLs (used for file downloads) from being affected by 'show-toolbar=true'
+                    if (href && !href.includes('show-toolbar=true') && !href.startsWith('blob:')) {
+                        if (href.startsWith('#') || href.startsWith('/') || href.includes(window.location.hostname)) {
+                            if (href === '#') {
+                                href = '/';
+                            }
+                            // append the query param if NOT "scroll to section" action.
+                            if (!href.includes('#')) {
+                                const newHref = href + (href.includes('?') ? '&' : '?') + 'show-toolbar=true';
+                                tag.setAttribute('href', newHref);
+                            }
+                        }
+                        // Set target from self to parent if NOT "scroll to section" action
+                        if ((!target || target === '_self') && !href.includes('#')) {
+                            tag.setAttribute('target', '_parent');
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
+
+<!--Phosphor icons-->
+<link rel="stylesheet" type="text/css" href="https://assets.softr-files.com/softr-blocks/prod/libs/phosphor-icons/2.0.3/regular/style.css" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="https://assets.softr-files.com/softr-blocks/prod/libs/phosphor-icons/2.0.3/bold/style.css" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="https://assets.softr-files.com/softr-blocks/prod/libs/phosphor-icons/2.0.3/duotone/style.css" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="https://assets.softr-files.com/softr-blocks/prod/libs/phosphor-icons/2.0.3/fill/style.css" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="https://assets.softr-files.com/softr-blocks/prod/libs/phosphor-icons/2.0.3/thin/style.css" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="https://assets.softr-files.com/softr-blocks/prod/libs/phosphor-icons/2.0.3/light/style.css" crossorigin="anonymous">
 
 </head>
+
 <body>
-<div id="container">
-<div id="header">
-<img src="img/hi.png" height="50" >
-<span align="center" style="font-family: verdana; font-size:34;clear:both;">GOVERNMENT OF KENYA </span>
-		</a><span style="width: 200px; float: right;">hello <?php echo $_SESSION["name"]; ?>&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://localhost/case/php/kill.php"><span>logout</span></a> </span><span style="float:right;font-size:12px;">
-<span>
-</div>
-<div id="photo" align="center">
-<img src="img/header.jpg" alt="napenda kenya ">
-</div>
-<hr> 
-<div align="center">
-<a href="homepage.php"><span align="center"><button id="employess">add case details</button></span></a>
-&nbsp;&nbsp; 
-<a href="index.php"><span align="center"><button id="employess">add employess</button></span></a>
-</div>
-<?php
-$per_page = 2;
-include 'config.php';
-$link=mysql_connect("$hostname","$username","$password")or 
-die('Could not connect: ' . mysql_error());
-if(mysql_select_db("$dbname",$link)) 
-{
-$count=mysql_query("select count(*) from $tablename") or die(mysql_error());
-$row2 = mysql_fetch_row($count);
-   $total=$row2[0];
-$pages = ceil($total/$per_page);
-}
-?>
-<div align="left" id='content2'>
-		<div class="search-background">
-			<label><img src="loader.gif" alt="" /></label>
-		</div>
-		<div id="content">
-		&nbsp;
-		</div>
-<table id="paging_button" align="center" style='margin-left: 375px; display: none;'>
-<tr><td>
-		<ul>
-		<?php
-		//Show page links
-		for($i=1; $i<=$pages; $i++)
-		{
-			echo '<li id="'.$i.'">'.$i.'</li>';
-		}?>
-		</ul>
-	</td>
-	</tr>
-	</table>
-</div>
-<div align=center style='font-size: 10px; color: magenta;'></div>
 
-<input style="display: none;" type="text" value="<?php echo $_SESSION["ids"]?>" id="ids">
-<span style="display: none;" >
-<p class="error_box"></p>
-        </span>
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/button.js"></script>
-<script type="text/javascript" src="js/refresh.js"></script>
-<script type="text/javascript" src="js/pagination.js"></script>
-<script type="text/javascript" src="js/addemp.js"></script>
+<div class="fixed-top preview-header">
+    <div class="update-banner" style="display: none">
+        <span>Your app has been updated. Refresh to see the latest changes</span>
+        <button class="refresh-button" id="refresh-button">Refresh</button>
+    </div>
+    <div class="position-relative w-100 toolbar">
+        <div id="selectUser" class="preview-header__view--selection">
+            <label class="dropdown-label" for="viewSelect">Preview as:</label>
+            <select id="viewSelect"></select>
+            <i class="ph ph-info " data-toggle="tooltip" data-placement="bottom" data-html="true" title="You are previewing the latest version of the app, including unpublished changes.<br><br>
+                  Please note that actions will affect your real data.">
+            </i>
+        </div>
+
+        <div class="preview-header__screens">
+            <a class="icon desktop active" data-toggle="tooltip" data-placement="bottom" data-html="true"
+               title="Desktop">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M8 21h8m-4-4v4m-5.2-4h10.4c1.6802 0 2.5202 0 3.162-.327a3 3 0 0 0 1.311-1.311C22 14.7202 22 13.8802 22 12.2V7.8c0-1.6802 0-2.5202-.327-3.162a3 3 0 0 0-1.311-1.311C19.7202 3 18.8802 3 17.2 3H6.8c-1.6802 0-2.5202 0-3.162.327a3 3 0 0 0-1.311 1.311C2 5.2798 2 6.1198 2 7.8v4.4c0 1.6802 0 2.5202.327 3.162a3 3 0 0 0 1.311 1.311C4.2798 17 5.1198 17 6.8 17"/>
+                </svg>
+            </a>
+            <a class="icon tablet" data-toggle="tooltip" data-placement="bottom" data-html="true" title="Tablet">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M15 2v1.4c0 .56 0 .84-.109 1.054a1 1 0 0 1-.437.437C14.2401 5 13.9601 5 13.4 5h-2.8c-.5601 0-.84 0-1.054-.109a1 1 0 0 1-.437-.437C9 4.24 9 3.96 9 3.4V2M7.2 22h9.6c1.1201 0 1.6802 0 2.108-.218a2 2 0 0 0 .874-.874C20 20.4802 20 19.9201 20 18.8V5.2c0-1.1201 0-1.6802-.218-2.108a2 2 0 0 0-.874-.874C18.4802 2 17.9201 2 16.8 2H7.2c-1.1201 0-1.6802 0-2.108.218a2 2 0 0 0-.874.874C4 3.5198 4 4.08 4 5.2v13.6c0 1.1201 0 1.6802.218 2.108.1917.3763.4977.6823.874.874C5.5198 22 6.08 22 7.2 22"/>
+                </svg>
+            </a>
+            <a class="icon mobile" data-toggle="tooltip" data-placement="bottom" data-html="true" title="Mobile">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 17.5h.01M8.2 22h7.6c1.1201 0 1.6802 0 2.108-.218a2 2 0 0 0 .874-.874C19 20.4802 19 19.9201 19 18.8V5.2c0-1.1201 0-1.6802-.218-2.108a2 2 0 0 0-.874-.874C17.4802 2 16.9201 2 15.8 2H8.2c-1.1201 0-1.6802 0-2.108.218a2 2 0 0 0-.874.874C5 3.5198 5 4.08 5 5.2v13.6c0 1.1201 0 1.6802.218 2.108.1917.3763.4977.6823.874.874C6.5198 22 7.08 22 8.2 22m4.3-4.5a.5.5 0 1 1-1.0001-.0001A.5.5 0 0 1 12.5 17.5"/>
+                </svg>
+            </a>
+        </div>
+
+        <div class="preview-header__shareable">
+            <button class="preview_header__shareable--link" id="edit-button">
+                <img src="/assets/images/pencil.svg" alt="Edit">
+                Edit
+            </button>
+        </div>
+    </div>
+</div>
+
+<!--Confirmation modal-->
+<div id="userConfirmationModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalCenterTitle">
+                    Preview as a user
+                </h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="ph ph-x-circle"></i>
+                </button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <div class="custom-control custom-checkbox remember-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customControlInline">
+                    <label class="custom-control-label" for="customControlInline">Don’t show this again</label>
+                </div>
+
+                <button type="button" class="btn submit-btn">
+                    Ok, I understand
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Toaster-->
+<div aria-live="polite" aria-atomic="true">
+    <div id="toast-container" class="toast hide" data-delay="5000" data-message="">
+        <div class="toast-body">
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <i class="ph ph-x-circle"></i>
+            </button>
+            <div class="title"></div>
+            <div class="message"></div>
+        </div>
+    </div>
+</div>
+
+<div class="iframe-container">
+    <div id="urlQRDiv" class="qr-container">
+        <img id="urlQRCodeImage" alt="QR Image" class="urlQRCodeImage">
+        <label style="margin-bottom: 4px;">Scan to try on your device</label>
+        <button id="sendLinkID" class="link-button" onclick="handleSendPreviewURL()">
+            <i class="ph ph-paper-plane-tilt"></i>
+            <span id="sendLinkText">Email a link instead</span>
+        </button>
+    </div>
+    <iframe id="preview-iframe" class="full-screen-preview__iframe" src="https://allen73665.preview.softr.app/?t=1776704145594" allowfullscreen></iframe>
+</div>
 
 
-<div id="footer" align="center">
-   BY JOSIAH &trade; &nbsp;  &nbsp; &nbsp;       <?php 
-    ?>&copy;<? echo date(' F D jS Y ');
-   ?>
-</div>
-</div>
+<!-- Scripts -->
+<script src="https://assets.softr-files.com/libs/jquery/3.7.0/jquery.min.js" crossorigin="anonymous"></script>
+<script src="https://assets.softr-files.com/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
+<script src="https://assets.softr-files.com/libs/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<script>
+    function showToast(message, type, delay, title) {
+        const toastElement = document.querySelector('.toast');
+
+        const toastTitle = toastElement.querySelector('.title');
+        if (title) {
+            toastTitle.textContent = title;
+            toastTitle.style.display = 'block';
+        } else {
+            toastTitle.textContent = '';
+            toastTitle.style.display = 'none';
+        }
+
+        const toastMessage = toastElement.querySelector('.message');
+        toastMessage.textContent = message || "Something went wrong. Please try again later.";
+
+        const toastBody = toastElement.querySelector('.toast-body');
+        toastBody.classList.remove('toast-error', 'toast-warning', 'toast-info', 'toast-success');
+        if (type === 'warning') {
+            toastBody.classList.add('toast-warning');
+        } else if (type === 'info') {
+            toastBody.classList.add('toast-info');
+        } else if (type === 'success') {
+            toastBody.classList.add('toast-success');
+        } else {
+            toastBody.classList.add('toast-error');
+        }
+
+        if (delay) {
+            toastElement.setAttribute('data-delay', '' + delay);
+        } else {
+            toastElement.setAttribute('data-delay', '5000');
+        }
+
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+    }
+
+    async function handleSendPreviewURL() {
+        const sendLinkBtn = document.getElementById('sendLinkID');
+        const sendLinkText = document.getElementById('sendLinkText');
+        const sendLinkIcon = sendLinkBtn.querySelector('i');
+
+        sendLinkBtn.disabled = true;
+        sendLinkBtn.style.opacity = '0';
+        setTimeout(() => {
+            sendLinkText.textContent = 'Link sent!';
+            sendLinkIcon.style.display = 'none';
+            sendLinkBtn.style.opacity = '1';
+        }, 100);
+
+        setTimeout(() => {
+            sendLinkBtn.style.opacity = '0';
+            setTimeout(() => {
+                sendLinkText.textContent = 'Email a link instead';
+                sendLinkIcon.style.display = '';
+                sendLinkBtn.style.opacity = '1';
+                sendLinkBtn.disabled = false;
+            }, 100);
+        }, 5000);
+
+        try {
+            let url = "/studio/send-preview-url";
+            let href = window.location.href;
+            const screenSize = localStorage.getItem('preview-screen-size');
+            if (!href.includes('device=' + screenSize)) {
+                href += '&device=' + screenSize;
+            }
+            let bodyData = JSON.stringify({url: href});
+
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: bodyData,
+            });
+
+            if (!response.ok) {
+                throw new Error("HTTP error " + response.status);
+            }
+            return response.arrayBuffer();
+        } catch (err) {
+            console.log("An error occurred while sending preview URL.", err);
+        }
+    }
+</script>
 </body>
+
 </html>
